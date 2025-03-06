@@ -1,0 +1,104 @@
+package melvinbiblioteca;
+
+    import java.util.ArrayList;
+    import java.util.HashMap;
+    import java.util.List;
+    import java.util.Map;
+
+    /**
+     */
+
+    public class Biblioteca {
+        List<Libro> libros;
+
+        public Biblioteca() {
+            libros = new ArrayList<>();
+        }
+
+        public void agregarLibro(Libro libro) {
+            libros.add(libro);
+            System.out.println("Libro agregado: " + libro.getTitulo());
+        }
+
+        public List<Libro> getLibros() {
+            return libros;
+        }
+
+        public void buscarLibro(String titulo, String autor) {
+            System.out.println("Resultados de busqueda:");
+        boolean encontrado = false;
+        for (Libro libro : libros) {
+            boolean tituloCoincide = (titulo == null || titulo.isEmpty() || libro.getTitulo().equalsIgnoreCase(titulo));
+            boolean autorCoincide = (autor == null || autor.isEmpty() || libro.getAutor().equalsIgnoreCase(autor));
+
+            if (tituloCoincide && autorCoincide) {
+                libro.mostrarInformacion(); // Muestra la información del libro
+                encontrado = true;
+                if (libro.isPrestado()) {
+                    System.out.println("El libro '" + libro.getTitulo() + "' esta prestado.");
+                } else {
+                    System.out.println("El libro '" + libro.getTitulo() + "' esta disponible.");
+                }
+            }
+        }
+        if (!encontrado) {
+            System.out.println("No se encontro ningún libro con el titulo '" + titulo + "' y el autor '" + autor + "'.");
+        }
+        }
+
+        public void prestarLibro(String titulo) {
+            for (Libro libro : libros) {
+                if (libro.getTitulo().equalsIgnoreCase(titulo)) {
+                    if (!libro.isPrestado()) {
+                        libro.prestar();
+                        System.out.println("Libro prestado: " + titulo);
+                    } else {
+                        System.out.println("El libro '" + titulo + "' ya esta prestado.");
+                    }
+                    return;
+                }
+            }
+            System.out.println("No se encontro el libro: " + titulo);
+        }
+
+        public void devolverLibro(String titulo) {
+            for (Libro libro : libros) {
+                if (libro.getTitulo().equalsIgnoreCase(titulo)) {
+                    if (libro.isPrestado()) {
+                        libro.devolver();
+                        System.out.println("Libro devuelto: " + titulo);
+                    } else {
+                        System.out.println("El libro '" + titulo + "' no esta prestado.");
+                    }
+                    return;
+                }
+            }
+            System.out.println("No se encontro el libro: " + titulo);
+        }
+
+        public void mostrarLibrosDisponibles() {
+            System.out.println("Libros disponibles:");
+        boolean hayDisponibles = false;
+        for (Libro libro : libros) {
+            if (!libro.isPrestado()) { 
+                libro.mostrarInformacion(); 
+                hayDisponibles = true; 
+            }
+        }
+        if (!hayDisponibles) { 
+            System.out.println("No hay libros disponibles en la biblioteca.");
+        }
+        }
+
+        public void generarEstadisticasGeneros() {
+            Map<String, Integer> estadisticas = new HashMap<>();
+            for (Libro libro : libros) {
+                estadisticas.put(libro.getGenero(), estadisticas.getOrDefault(libro.getGenero(), 0) + 1);
+            }
+
+            System.out.println("Estadisticas de generos:");
+            for (Map.Entry<String, Integer> entry : estadisticas.entrySet()) {
+                System.out.println("Genero: " + entry.getKey() + ", Cantidad: " + entry.getValue());
+            }
+        }
+    }
