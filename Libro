@@ -1,0 +1,86 @@
+package melvinbiblioteca;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Libro {
+    private String titulo;
+    private String autor;
+    private int anioPublicacion;
+    private String genero;
+    private boolean prestado;
+    private List<String> comentarios;
+    private List<Integer> calificaciones;
+
+    public Libro(String titulo, String autor, int anioPublicacion, String genero) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.anioPublicacion = anioPublicacion;
+        this.genero = genero;
+        this.prestado = false;
+        this.comentarios = new ArrayList<>();
+        this.calificaciones = new ArrayList<>();
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+  
+
+    public List<String> getComentarios() {
+        return comentarios;
+    }
+    
+    public String getGenero() {  
+        return genero;
+    }
+
+    public boolean isPrestado() {
+        return prestado;
+    }
+
+    public void prestar() {
+        this.prestado = true;
+    }
+
+    public void devolver() {
+        this.prestado = false;
+    }
+
+    public void agregarComentario(String comentario) {
+        comentarios.add(comentario);
+    }
+
+    public void agregarCalificacion(int calificacion) {
+        if (calificacion >= 1 && calificacion <= 5) {
+            calificaciones.add(calificacion);
+        }
+    }
+
+    public double obtenerCalificacionPromedio() {
+        if (calificaciones.isEmpty()) {
+            return 0;
+        }
+        int suma = 0;
+        for (int calificacion : calificaciones) {
+            suma += calificacion;
+        }
+        return (double) suma / calificaciones.size();
+    }
+
+    public void mostrarInformacion() {
+        System.out.println("Titulo: " + titulo);
+        System.out.println("Autor: " + autor);
+        System.out.println("Ano de publicación: " + anioPublicacion);
+        System.out.println("Genero: " + genero);
+        System.out.println("Disponibilidad: " + (prestado ? "No disponible" : "Disponible"));
+        System.out.println("Calificacion promedio: " + obtenerCalificacionPromedio());
+        System.out.println("Comentarios: " + comentarios);
+        System.out.println();
+    }
+}
